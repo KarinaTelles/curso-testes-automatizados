@@ -1,0 +1,15 @@
+[project]
+name = "curso-testes-automatizados"
+version = "1.0.0"
+description = "Material dos módulos de Python do curso de testes automatizados"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "pytest-cov>=7.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-ra --import-mode=importlib"
