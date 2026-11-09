@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python (módulos 01 e 02)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Gabarito do módulo 01
+        run: uv run pytest 01-logica-com-python/gabarito
+      - name: Gabarito do módulo 02
+        run: uv run pytest 02-testes-unitarios-python/gabarito
+
+  java:
+    name: Java (módulos 03, 04 e 05)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-java@v6.2.0
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: maven
+      # O runner já tem o Google Chrome; o Selenium Manager resolve o chromedriver.
+      - name: Gabaritos dos módulos 03, 04 e 05
+        run: ./mvnw -B -ntp test
