@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - Loja de Treino</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 420px; margin: 3rem auto; padding: 0 1rem; color: #222; }
+    label { display: block; margin-top: 1rem; }
+    input { width: 100%; padding: .5rem; box-sizing: border-box; }
+    button { margin-top: 1rem; padding: .5rem 1rem; }
+    .flash { margin-top: 1rem; padding: .75rem; border-radius: 4px; }
+    .sucesso { background: #e3f6e5; border: 1px solid #5cb85c; }
+    .erro { background: #fbe3e4; border: 1px solid #d9534f; }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main id="tela-login">
+    <h1>Entrar</h1>
+    <p>Página de treino do curso. Usuário <code>aluno</code>, senha <code>senha123</code>.</p>
+    <form id="form-login" novalidate>
+      <label for="usuario">Usuário</label>
+      <input id="usuario" name="usuario" autocomplete="username">
+      <label for="senha">Senha</label>
+      <input id="senha" name="senha" type="password" autocomplete="current-password">
+      <button type="submit">Entrar</button>
+    </form>
+  </main>
+
+  <main id="area-segura" hidden>
+    <h1>Área segura</h1>
+    <p>Olá, <span id="nome-usuario"></span>.</p>
+    <button id="sair" type="button">Sair</button>
+  </main>
+
+  <div id="flash" class="flash" role="status" hidden></div>
+
+  <script>
+    const USUARIO = "aluno";
+    const SENHA = "senha123";
+
+    const flash = document.getElementById("flash");
+    const telaLogin = document.getElementById("tela-login");
+    const areaSegura = document.getElementById("area-segura");
+
+    function mostrarMensagem(texto, tipo) {
+      flash.textContent = texto;
+      flash.className = "flash " + tipo;
+      flash.hidden = false;
+    }
+
+    document.getElementById("form-login").addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      flash.hidden = true;
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value;
+
+      // A resposta demora um pouco de propósito, como uma chamada ao servidor.
+      // É isso que obriga os testes a usar uma espera explícita.
+      setTimeout(() => {
+        if (!usuario || !senha) {
+          mostrarMensagem("Preencha usuário e senha.", "erro");
+        } else if (usuario === USUARIO && senha === SENHA) {
+          telaLogin.hidden = true;
+          areaSegura.hidden = false;
+          document.getElementById("nome-usuario").textContent = usuario;
+          document.title = "Área segura - Loja de Treino";
+          mostrarMensagem("Você entrou na área segura!", "sucesso");
+        } else {
+          mostrarMensagem("Usuário ou senha inválidos.", "erro");
+        }
+      }, 400);
+    });
+
+    document.getElementById("sair").addEventListener("click", () => {
+      areaSegura.hidden = true;
+      telaLogin.hidden = false;
+      document.getElementById("form-login").reset();
+      document.title = "Login - Loja de Treino";
+      mostrarMensagem("Você saiu da área segura.", "sucesso");
+    });
+  </script>
+</body>
+</html>

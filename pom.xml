@@ -38,6 +38,7 @@
       <modules>
         <module>03-poo-e-testes-java/gabarito</module>
         <module>04-bdd-com-cucumber/gabarito</module>
+        <module>05-testes-de-interface-selenium/gabarito</module>
       </modules>
     </profile>
     <profile>
@@ -45,6 +46,7 @@
       <modules>
         <module>03-poo-e-testes-java/exercicios</module>
         <module>04-bdd-com-cucumber/exercicios</module>
+        <module>05-testes-de-interface-selenium/exercicios</module>
       </modules>
     </profile>
   </profiles>

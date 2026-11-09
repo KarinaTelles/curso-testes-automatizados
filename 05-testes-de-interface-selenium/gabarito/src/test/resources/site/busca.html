@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Busca - Loja de Treino</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 3rem auto; padding: 0 1rem; color: #222; }
+    input { width: 70%; padding: .5rem; }
+    button { padding: .5rem 1rem; }
+    li { padding: .25rem 0; }
+  </style>
+</head>
+<body>
+  <h1>Buscar cursos</h1>
+  <form id="form-busca">
+    <input name="q" aria-label="Termo de busca" placeholder="Ex.: selenium">
+    <button type="submit">Buscar</button>
+  </form>
+  <p id="resumo"></p>
+  <ul id="resultados"></ul>
+
+  <script>
+    const CURSOS = [
+      "Lógica com Python",
+      "Testes unitários com pytest",
+      "Orientação a objetos com Java",
+      "Testes com JUnit",
+      "BDD com Cucumber",
+      "Selenium WebDriver com Java",
+      "Selenium Grid na prática",
+    ];
+
+    function normalizar(texto) {
+      return texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+    }
+
+    document.getElementById("form-busca").addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      const termo = evento.target.q.value.trim();
+      const lista = document.getElementById("resultados");
+      lista.innerHTML = "";
+
+      setTimeout(() => {
+        const encontrados = CURSOS.filter((curso) => normalizar(curso).includes(normalizar(termo)));
+        for (const curso of encontrados) {
+          const item = document.createElement("li");
+          item.className = "resultado";
+          item.textContent = curso;
+          lista.appendChild(item);
+        }
+        document.getElementById("resumo").textContent =
+          encontrados.length === 0 ? "Nenhum curso encontrado." : encontrados.length + " curso(s) encontrado(s).";
+        document.title = termo + " - Busca - Loja de Treino";
+      }, 300);
+    });
+  </script>
+</body>
+</html>
